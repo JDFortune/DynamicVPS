@@ -1,0 +1,18 @@
+POST http://localhost:3000/new
+Content-Type: application/json
+
+{
+  "name": "Hunan"
+}
+
+###
+POST http://localhost:3000/remove
+Content-Type: application/json
+
+{
+  "id": 9
+}
+
+###
+
+GET http://localhost:3000/
