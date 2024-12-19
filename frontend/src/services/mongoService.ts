@@ -2,7 +2,8 @@ import axios from 'axios';
 import { NewPerson } from '../types';
 
 
-const baseUrl = 'https://jd-onlyfans.com/mongo/';
+const baseUrl = import.meta.env.VITE_BASE_URL + '/mongo/';
+console.log('Mongo\'s baseurl', baseUrl);
 
 export function getPeople() {
   return axios.get(baseUrl)

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { NewPerson } from '../types';
 
-
-const baseUrl = 'https://jd-onlyfans.com/postgres/';
+const baseUrl = import.meta.env.VITE_BASE_URL + '/postgres/';
+console.log('The base url is ', baseUrl);
 
 export function getPeople() {
   return axios.get(baseUrl)
