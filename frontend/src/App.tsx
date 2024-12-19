@@ -1,78 +1,109 @@
 import { useState, useEffect, SyntheticEvent } from 'react';
-import { addPerson, getPeople, deletePerson } from './services/namesService';
+import postgresService from './services/postgresService';
+import mongoService from './services/mongoService';
 import { Person } from './types';
 
 function App() {
-  const [pPeople, setPPeople] = useState<Person[]>([]);
-  const [pName, setPName] = useState('');
+  const [postgresPeople, setPostgresPeople] = useState<Person[]>([]);
+  const [postgresName, setPostgresName] = useState('');
+  const [mongoPeople, setMongoPeople] = useState<Person[]>([]);
+  const [mongoName, setMongoName] = useState('');
+
 
   useEffect(() => {
-    getPeople().then(people => setPPeople(people));
+    postgresService.getPeople().then(people => setPostgresPeople(people));
+    mongoService.getPeople().then(people => setMongoPeople(people));
   }, []);
 
-  const submitPostgresForm = (e: SyntheticEvent) => {
-    e.preventDefault();
-    const person = { name: pName };
-
-    addPerson(person)
-      .then((response) => setPPeople([...pPeople, response]));
-  }
-
-  const createDelete = (id: number) => {
-    return (e: SyntheticEvent) => {
+  const postgresSubmitHandler = (e: SyntheticEvent) => {
       e.preventDefault();
 
-      deletePerson({id})
-        .then(() => {
-          console.log('Successfully Deleted');
-          setPPeople((current) => current.filter(person => person.id !== id));
+      const person = { name: postgresName };
+  
+      postgresService.addPerson(person)
+        .then((response: any) => {
+          setPostgresPeople([...postgresPeople, response]);
+          setPostgresName('');
       });
     }
+
+  const mongoSubmitHandler = (e: SyntheticEvent) => {
+    e.preventDefault();
+
+    const person = { name: mongoName };
+
+    mongoService.addPerson(person)
+      .then((response: any) => {
+        setMongoPeople([...mongoPeople, response]);
+        setMongoName('');
+    });
   }
+
+    const createPostgresDelete = (id: string | number) => {
+      return (e: SyntheticEvent) => {
+        e.preventDefault();
+        if (typeof id === 'string') return;
+  
+        postgresService.deletePerson({id})
+          .then(() => {
+            console.log('Successfully Deleted');
+            setPostgresPeople((current) => current.filter(person => person.id !== id));
+        });
+      }
+    }
+
+    const createMongoDelete = (id: string | number) => {
+      return (e: SyntheticEvent) => {
+        e.preventDefault();
+        if (typeof id === 'number') return null;
+  
+        mongoService.deletePerson({id})
+          .then(() => {
+            console.log('Successfully Deleted');
+            setMongoPeople((current: Person[]) => current.filter(person => person.id !== id));
+        });
+      }
+    }
   
   return (
     <>
       <fieldset className="postgres">
       <h2>Add new postgres name</h2>
-      <form onSubmit={submitPostgresForm}>
+      <form onSubmit={postgresSubmitHandler}>
         New P-Name: <input
-          value={pName}
-          onChange={(e) => setPName(e.target.value)}
+          value={postgresName}
+          onChange={(e) => setPostgresName(e.target.value)}
         /><br/>
         <input type='submit' value="Add Postgres Person"/>
       </form>
       <br/>
       <ol>
-        {pPeople.map((person) => {
+        {postgresPeople.map((person) => {
           return (
-            <>
-              <li key={person.id}>{person.name} <button onClick={createDelete(person.id)}>delete</button></li>
-            </>
+            <li key={`${person.id}_${person.name}`}>{person.name} <button onClick={createPostgresDelete(person.id)}>delete</button></li>
           )
         })}
       </ol>
       </fieldset>
 
-      {/* <fieldset className="mongo">
+      <fieldset className="mongo">
         <h2>Add new mongo name</h2>
-        <form onSubmit={submitMongoForm}>
+        <form onSubmit={mongoSubmitHandler}>
           New M-Name: <input
-            value={name: mName}
-            onChange={(e) => setMName(e.target.value)}
+            value={mongoName}
+            onChange={(e) => setMongoName(e.target.value)}
           /><br/>
           <input type='submit' value="Add Mongo Person"/>
         </form>
         <br/>
         <ol>
-          {mPeople.map((person) => {
+          {mongoPeople.map((person) => {
             return (
-              <>
-                <li key={person.id}>{person.name} <button onClick={createDelete(person.id)}>delete</button></li>
-              </>
-            )
+                <li key={person.id}>{person.name} <button onClick={createMongoDelete(person.id)}>delete</button></li>
+            );
           })}
         </ol>
-      </fieldset> */}
+      </fieldset>
     </>
   )
 }

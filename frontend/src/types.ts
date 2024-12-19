@@ -1,5 +1,7 @@
+import { ObjectId } from "mongodb";
+
 export type Person = {
-  id: number;
+  id: number | string;
   name: string;
 }
 

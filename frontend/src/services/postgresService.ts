@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NewPerson } from '../types';
 
 
-const baseUrl = 'http://localhost:3000/';
+const baseUrl = 'http://localhost:3000/postgres/';
 
 export function getPeople() {
   return axios.get(baseUrl)
@@ -22,4 +22,6 @@ export function deletePerson(id: {id: number}) {
 
 export default {
   getPeople,
+  addPerson,
+  deletePerson,
 }

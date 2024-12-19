@@ -1,30 +1,31 @@
 const express = require('express');
 const router = express.Router();
-const postgres = require('../sql/postgresAPI');
+const mongo = require('../mongodb/mongoAPI');
 
 
 router.get('/', (_req, res) => {
-  postgres.getNames()
+  mongo.getNames()
     .then((rows) => {
       res.send(rows);
     });
 });
 
 router.post('/new', (req, res) => {
-  let name = req.body.name;
-  postgres.addName(name)
+  let name = req.body;
+  mongo.addName(name)
     .then((response) => {
       res.status(201).send(response)
   });
 });
 
 router.post('/remove', (req, res) => {
-  let id = Number(req.body.id);
 
-  if (id) {
-    postgres.deleteName(id)
+  try {
+    mongo.deleteName(req.body.id)
       .then((response) => res.send(response))
       .catch((error) => console.error(error.message));
+  } catch (err) {
+    console.error('Something went wrong:', err);
   }
 });
 

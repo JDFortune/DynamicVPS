@@ -6,7 +6,6 @@ const path = require('path');
 const schemaPath = path.join(__dirname, 'schema.sql');
 
 fs.readFile(schemaPath, 'utf-8', async (err, data) => {
-  console.log('The query is:', data);
   try {
     await pool.query(data);
     await addName('Chelsea');

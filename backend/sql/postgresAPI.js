@@ -1,9 +1,9 @@
 const { pool } = require('./pool');
 
 async function addName(name) {
-  return pool.query("INSERT INTO testtable (name) VALUES ($1)", [name])
+  return pool.query("INSERT INTO people (name) VALUES ($1)", [name])
     .then(() => {
-      return pool.query('SELECT * FROM testtable WHERE name = ($1)', [name])
+      return pool.query('SELECT * FROM people WHERE name = ($1)', [name])
         .then((result) => {
           console.log(`Successfully added ${name}.`);
           return result.rows[0];
@@ -13,12 +13,12 @@ async function addName(name) {
 }
 
 async function getNames() {
-  let res = await pool.query("SELECT * FROM testtable;");
+  let res = await pool.query("SELECT * FROM people;");
   return res.rows;
 }
 
 async function deleteName(id) {
-  pool.query("DELETE FROM testtable WHERE id = ($1)", [id])
+  pool.query("DELETE FROM people WHERE id = ($1)", [id])
     .then(() => console.log('Successfully deleted') );
 }
 
