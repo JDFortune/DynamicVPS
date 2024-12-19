@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
-    "seed": "psql -U jdfortune -d photoapp -f ./sql/schemaAndSeed.sql"
+    "seed": "psql -U jdfortune -d photoapp -f ./sql/schemaAndSeed.sql",
+    "ui-build": "rm -rf dist && cp -r ../frontend/dist/ ./"
   },
   "keywords": [],
   "author": "",
