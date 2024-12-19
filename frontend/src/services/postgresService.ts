@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NewPerson } from '../types';
 
 
-const baseUrl = 'http://localhost:3000/postgres/';
+const baseUrl = 'https://jd-onlyfans.com/postgres/';
 
 export function getPeople() {
   return axios.get(baseUrl)

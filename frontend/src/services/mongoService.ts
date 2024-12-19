@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NewPerson } from '../types';
 
 
-const baseUrl = 'http://localhost:3000/mongo/';
+const baseUrl = 'https://jd-onlyfans.com/mongo/';
 
 export function getPeople() {
   return axios.get(baseUrl)
@@ -25,3 +25,9 @@ export default {
     addPerson,
     deletePerson,
 }
+
+/*
+photoapp:
+people : [{id: number, name: string}, {id: number, name: string} ]
+
+*/
