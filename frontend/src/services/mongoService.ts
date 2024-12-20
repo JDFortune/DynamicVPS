@@ -26,9 +26,3 @@ export default {
     addPerson,
     deletePerson,
 }
-
-/*
-photoapp:
-people : [{id: number, name: string}, {id: number, name: string} ]
-
-*/
